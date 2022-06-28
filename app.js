@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
+const invoiceRoutes = require('./routes/invoice')
 mongoose.connect(`${process.env.MONGODB_URI}`, {
     // useMongoClient: true
     // useCreateIndex: true,
@@ -21,4 +22,5 @@ app.use(bodyParser.json());
 
 app.use(cors())
 
+app.use('/invoice', invoiceRoutes)
 module.exports = app;
