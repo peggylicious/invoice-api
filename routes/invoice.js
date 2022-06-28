@@ -5,7 +5,7 @@ const invoice = require("../models/invoice");
 const router = express.Router({ mergeParams: true });
 router.post("/create", (req, res, next) => {
     // invoice.find(invoice_id: req.body.invoice_id)
-  const neInvoice = new invoice({
+  const newInvoice = new invoice({
     id: new mongoose.Types.ObjectId(),
     invoice_id: req.body.invoice_id, // String is shorthand for {type: String}
     created_at: req.body.created_at,
@@ -31,7 +31,7 @@ router.post("/create", (req, res, next) => {
     total: req.body.total,
   });
 
-  neInvoice
+  newInvoice
     .save()
     .then((result) => {
       res.status(200).json(result);
