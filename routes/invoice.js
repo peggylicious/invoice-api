@@ -61,9 +61,9 @@ router.delete("/delete-invoice", (req, res, next) => {
       res.status(500).json(err);
     });
 });
-router.put("/update", (req, res, next) => {
+router.put("/update/:invoice_id", (req, res, next) => {
   invoice
-    .find({ invoice_id: req.query.invoice_id })
+    .find({ invoice_id: req.params.invoice_id })
     .then((result) => {
       let modifiedItems = req.body;
       let invoiceItemKeys = Object.keys(result[0].toObject());
