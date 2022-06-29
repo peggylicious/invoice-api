@@ -61,4 +61,25 @@ router.delete("/delete-invoice", (req, res, next) => {
       res.status(500).json(err);
     });
 });
+router.put("/update", (req, res, next) => {
+  invoice
+    .find({ invoice_id: req.query.invoice_id })
+    .then((result) => {
+      let modifiedItems = req.body;
+      let invoiceItemKeys = Object.keys(result[0].toObject());
+      invoiceItemKeys.filter((element, index) => { // Looks for items to be modified
+        if (modifiedItems.hasOwnProperty(element)) { // If property exists both in request.body and document
+          result[0][element] = modifiedItems[element];
+        }
+      });
+      return result[0].save();
+    })
+    .then((x) => {
+      res.status(200).json(x);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;
