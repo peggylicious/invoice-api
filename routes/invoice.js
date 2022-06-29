@@ -4,7 +4,7 @@ const invoice = require("../models/invoice");
 
 const router = express.Router({ mergeParams: true });
 router.post("/create", (req, res, next) => {
-    // invoice.find(invoice_id: req.body.invoice_id)
+  // invoice.find(invoice_id: req.body.invoice_id)
   const newInvoice = new invoice({
     id: new mongoose.Types.ObjectId(),
     invoice_id: req.body.invoice_id, // String is shorthand for {type: String}
@@ -27,10 +27,10 @@ router.post("/create", (req, res, next) => {
       postCode: req.body.client_address.post_code,
       country: req.body.client_address.country,
     },
-    items: req.body.items,
+    items: [],
     total: req.body.total,
   });
-
+  newInvoice.items.push(...req.body.items); //Copy list items from req.body.items into new "items" list in mongoose
   newInvoice
     .save()
     .then((result) => {
