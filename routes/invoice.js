@@ -51,5 +51,14 @@ router.get("/all", (req, res, next) => {
       res.status(500).json(err);
     });
 });
-
+router.delete("/delete-invoice", (req, res, next) => {
+  invoice
+    .deleteOne({ invoice_id: req.body.invoice_id })
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
 module.exports = router;
