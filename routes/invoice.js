@@ -67,8 +67,10 @@ router.put("/update", (req, res, next) => {
     .then((result) => {
       let modifiedItems = req.body;
       let invoiceItemKeys = Object.keys(result[0].toObject());
-      invoiceItemKeys.filter((element, index) => { // Looks for items to be modified
-        if (modifiedItems.hasOwnProperty(element)) { // If property exists both in request.body and document
+      invoiceItemKeys.filter((element, index) => {
+        // Looks for items to be modified
+        if (modifiedItems.hasOwnProperty(element)) {
+          // If property exists both in request.body and document
           result[0][element] = modifiedItems[element];
         }
       });
