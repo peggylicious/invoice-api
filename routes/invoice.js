@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const invoice = require("../models/invoice");
+const user = require("../models/user");
 
 const router = express.Router({ mergeParams: true });
 router.post("/create", (req, res, next) => {
@@ -30,15 +31,30 @@ router.post("/create", (req, res, next) => {
     items: [],
     total: req.body.total,
   });
-  newInvoice.items.push(...req.body.items); //Copy list items from req.body.items into new "items" list in mongoose
-  newInvoice
-    .save()
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
+  user.findOne({ user_name: req.body.user_name }).then((result) => {
+    console.log("found user");
+    newInvoice.invoice_id = `000${result.last_invoice_digit++}`;
+    newInvoice.items.push(...req.body.items); //Copy list items from req.body.items into new "items" list in mongoose
+    user.last_invoice_digit = result.last_invoice_digit++; //Create invoice serialized number
+    newInvoice
+      .save()
+      .then((result_0) => {
+        console.log("Saved Invoice");
+
+        return user.updateOne(
+          { user_name: req.body.user_name },
+          { last_invoice_digit: result.last_invoice_digit++ }
+        );
+      })
+      .then((x) => {
+        console.log(x)
+        console.log("Updated user")
+        res.status(200).json(x)
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  });
 });
 
 router.get("/all", (req, res, next) => {
