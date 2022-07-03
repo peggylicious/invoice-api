@@ -2,13 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const invoice = require("../models/invoice");
 const user = require("../models/user");
+const invoiceNo = require("../module/invoiceNo")
 
 const router = express.Router({ mergeParams: true });
 router.post("/create", (req, res, next) => {
   // invoice.find(invoice_id: req.body.invoice_id)
   const newInvoice = new invoice({
     id: new mongoose.Types.ObjectId(),
-    invoice_id: req.body.invoice_id, // String is shorthand for {type: String}
+    invoice_id: '', // String is shorthand for {type: String}
     created_at: req.body.created_at,
     payment_due: req.body.payment_due,
     description: req.body.descr,
@@ -33,9 +34,10 @@ router.post("/create", (req, res, next) => {
   });
   user.findOne({ user_name: req.body.user_name }).then((result) => {
     console.log("found user");
-    newInvoice.invoice_id = `000${result.last_invoice_digit++}`;
+    let newValue = result.last_invoice_digit++
+    newInvoice.invoice_id = invoiceNo(newValue);
     newInvoice.items.push(...req.body.items); //Copy list items from req.body.items into new "items" list in mongoose
-    user.last_invoice_digit = result.last_invoice_digit++; //Create invoice serialized number
+    user.last_invoice_digit = newValue; //Create invoice serialized number
     newInvoice
       .save()
       .then((result_0) => {
