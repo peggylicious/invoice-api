@@ -5,12 +5,15 @@ const user = require("../models/user");
 const invoiceNo = require("../module/invoiceNo")
 
 const router = express.Router({ mergeParams: true });
+const isLoggedIn = require('../middleware/isLoggedIn')
+
 router.post("/create", (req, res, next) => {
   // invoice.find(invoice_id: req.body.invoice_id)
   const newInvoice = new invoice({
     id: new mongoose.Types.ObjectId(),
     invoice_id: '', // String is shorthand for {type: String}
     created_at: req.body.created_at,
+    created_by: req.body.created_by,
     payment_due: req.body.payment_due,
     description: req.body.descr,
     payment_terms: req.body.payment_terms,
@@ -59,9 +62,9 @@ router.post("/create", (req, res, next) => {
   });
 });
 
-router.get("/all", (req, res, next) => {
+router.get("/all", isLoggedIn, (req, res, next) => {
   invoice
-    .find()
+    .find({created_by: mongoose.Types.ObjectId(req.userId)}) //UserId is gotten from middleware
     .then((result) => {
       res.status(200).json(result);
     })
