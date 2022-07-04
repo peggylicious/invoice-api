@@ -25,4 +25,15 @@ app.use(cors())
 
 app.use('/invoice', invoiceRoutes)
 app.use('/user', userRoutes)
+
+// error handler middleware
+app.use((error, req, res, next) => {
+    console.log(error)
+      res.status(error.status || 500).json({
+        // error: {
+          status: error.status || 500,
+          message: error.message || 'Internal Server Error',
+        // },
+      });
+    });
 module.exports = app;
