@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 const invoiceSchema = mongoose.Schema({
   invoice_id: String, // String is shorthand for {type: String}
   created_at: String,
+  created_by: { type: Schema.Types.ObjectId, ref: 'User' },
   payment_due: String,
   description: String,
   payment_terms: String,
@@ -27,4 +28,4 @@ const invoiceSchema = mongoose.Schema({
   total: Number
 });
 
-module.exports = mongoose.model("invoice", invoiceSchema);
+module.exports = mongoose.model("Invoice", invoiceSchema);
