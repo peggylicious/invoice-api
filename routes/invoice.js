@@ -36,9 +36,15 @@ router.post("/create", (req, res, next) => {
     total: req.body.total,
   });
   user.findOne({ user_name: req.body.user_name }).then((result) => {
-    console.log("found user");
-    let newValue = result.last_invoice_digit++
-    newInvoice.invoice_id = invoiceNo(newValue);
+    let newValue = result.last_invoice_digit;
+    console.log("last digit ", newValue)
+    if( typeof newValue === 'undefined'){
+      console.log('Undefined value ', newValue)
+      newValue = 0
+    }
+    // console.log("found user", result);
+    // newValue = result.last_invoice_digit++;
+    newInvoice.invoice_id = invoiceNo(newValue++);
     newInvoice.items.push(...req.body.items); //Copy list items from req.body.items into new "items" list in mongoose
     user.last_invoice_digit = newValue; //Create invoice serialized number
     newInvoice
@@ -48,7 +54,7 @@ router.post("/create", (req, res, next) => {
 
         return user.updateOne(
           { user_name: req.body.user_name },
-          { last_invoice_digit: result.last_invoice_digit++ }
+          { last_invoice_digit: newValue++}
         );
       })
       .then((x) => {

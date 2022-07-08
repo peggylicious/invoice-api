@@ -8,7 +8,7 @@ function catchError() {
 }
 module.exports = (req, res, next) => {
   let authorizationHeader = req.header("authorization");
-  //   console.log(authorizationHeader);
+    console.log(authorizationHeader);
   if (req.header("authorization") === undefined) {
     const error = new Error("No header provided");
     error.statusCode = 401;

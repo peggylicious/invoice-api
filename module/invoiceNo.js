@@ -1,4 +1,5 @@
 function createInvoiceNumber(newDigit) {
+  console.log("New digit ", newDigit)
   // Get current year
   let currentDate = new Date();
   let year = currentDate.getFullYear();
