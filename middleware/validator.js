@@ -12,7 +12,14 @@ module.exports.check = [
     "total",
     "client_name",
     "client_email",
-    "senderAddress['street']"
+    "senderAddress['street']",
+    "senderAddress['city']",
+    "senderAddress.postCode", 
+    "senderAddress.country",
+    "clientAddress.street", 
+    "clientAddress.city",
+    "clientAddress.postCode", 
+    "clientAddress.country"
   ])
     .not()
     .isEmpty()
