@@ -17,6 +17,7 @@ router.post(
 );
 
 router.get("/all", isLoggedIn, invoice.getAllInvoices);
+router.get("/invoice/:invoice_id", invoice.getInvoice)
 router.delete("/delete/:invoice_id", invoice.deleteInvoice);
 router.put("/update/:invoice_id", invoice.updateInvoice);
 

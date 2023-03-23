@@ -85,6 +85,16 @@ module.exports.getAllInvoices = (req, res, next) => {
       res.status(500).json(err);
     });
 };
+module.exports.getInvoice = (req, res, next) => {
+  invoice
+    .findOne({invoice_id: req.params.invoice_id})
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+}
 module.exports.deleteInvoice = (req, res, next) => {
   invoice
     .deleteOne({ invoice_id: req.params.invoice_id })
